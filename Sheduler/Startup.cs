@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Sheduler.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,15 @@ namespace Sheduler
         {
 
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddScoped<ISchedulerService, SchedulerService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sheduler", Version = "v1" });
             });
+
+            services.AddHostedService<SchedulerStartupService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
